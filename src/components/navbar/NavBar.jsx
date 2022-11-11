@@ -3,8 +3,11 @@ import { GiHamburgerMenu, GiTireIronCross } from "react-icons/gi";
 import { BsSearch } from "react-icons/bs";
 import { AiOutlineShoppingCart } from "react-icons/ai";
 import { Link, useNavigate } from "react-router-dom";
+import { observer } from "mobx-react-lite";
+import { loginStore } from "../../store/AuthStore";
+import { toJS } from "mobx";
 
-export const Navbar = () => {
+const Navbar = () => {
   const [toggle, setToggle] = useState(false);
   const [expression, setExpression] = useState("");
   const item = useRef(null);
@@ -22,6 +25,11 @@ export const Navbar = () => {
     item.current.className = visible;
     return setToggle(!toggle);
   };
+
+  const logout = () => {
+    loginStore.logout();
+  };
+
   const handleChange = (e) => {
     const value = e.target.value;
     setExpression(value);
@@ -37,9 +45,7 @@ export const Navbar = () => {
         {/* logo and company name */}
         <Link to="/" className="flex items-center">
           {/* <img src={Logo} alt="logo" className="mr-3 w-20 md:w-24 lg:w-32 " /> */}
-          <span className="font-mono font-semibold text-xl">
-            Lanceme Up Store
-          </span>
+          <p className="font-mono font-semibold text-xl">Lanceme Up Store</p>
         </Link>
         <div className="flex order-2 ">
           {/* open menu */}
@@ -99,18 +105,24 @@ export const Navbar = () => {
             <li className="block py-2 pr-4 pl-3 text-black hover:text-blue-600  rounded md:text-lg md:bg-transparent cursor-pointer md:p-0 dark:text-white">
               <Link to="/">Home</Link>
             </li>
-            <li className="block py-2 pr-4 pl-3 text-black hover:text-blue-600  rounded md:text-lg md:bg-transparent cursor-pointer md:p-0 dark:text-white">
-              <Link to="/admin">Admin</Link>
-            </li>
-            <li className="block py-2 pr-4 pl-3 text-black hover:text-blue-600 rounded md:text-lg md:bg-transparent cursor-pointer  md:p-0 dark:text-white">
-              <Link to="/login">Login</Link>
-            </li>
-            <li className="block py-2 pr-4 pl-3 text-black hover:text-blue-600 rounded md:text-lg md:bg-transparent cursor-pointer  md:p-0 dark:text-white">
-              <Link to="/register">Register</Link>
-            </li>
-            <li className="block py-2 pr-4 pl-3 text-black hover:text-blue-600  rounded md:text-lg md:bg-transparent cursor-pointer md:p-0 dark:text-white">
-              <Link to="/logout">Logout</Link>
-            </li>
+            {!toJS(loginStore.isLogged) && (
+              <li className="block py-2 pr-4 pl-3 text-black hover:text-blue-600 rounded md:text-lg md:bg-transparent cursor-pointer  md:p-0 dark:text-white">
+                <Link to="/login">Login</Link>
+              </li>
+            )}
+            {!toJS(loginStore.isLogged) && (
+              <li className="block py-2 pr-4 pl-3 text-black hover:text-blue-600 rounded md:text-lg md:bg-transparent cursor-pointer  md:p-0 dark:text-white">
+                <Link to="/register">Register</Link>
+              </li>
+            )}
+            {toJS(loginStore.isLogged) && (
+              <li
+                onClick={logout}
+                className="block py-2 pr-4 pl-3 text-black hover:text-blue-600  rounded md:text-lg md:bg-transparent cursor-pointer md:p-0 dark:text-white"
+              >
+                Logout
+              </li>
+            )}
             <li className="block py-2 pr-4 pl-3 text-black hover:text-blue-600 rounded md:text-lg md:bg-transparent cursor-pointer  md:p-0 dark:text-white">
               <Link to="/cart" className="flex items-center gap-2">
                 <AiOutlineShoppingCart fontSize="20px" /> Cart
@@ -122,3 +134,4 @@ export const Navbar = () => {
     </nav>
   );
 };
+export default observer(Navbar);

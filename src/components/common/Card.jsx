@@ -1,13 +1,28 @@
-import React from "react";
+import React, { useState } from "react";
 import { AiFillStar } from "react-icons/ai";
+import { MdOutlineAddShoppingCart } from "react-icons/md";
 
-const Card = ({ img }) => {
+const Card = ({ id, img, title, category, price, index, addToCart }) => {
+  const [isHovered, setIsHovered] = useState(false);
+
   return (
-    <div className="flex items-center justify-center flex-col space-y-2 cursor-pointer transition-colors hover:bg-slate-50 hover:rounded-sm hover:shadow-sm py-3">
+    <div
+      onMouseOver={() => setIsHovered(true)}
+      onMouseOut={() => setIsHovered(false)}
+      className="flex items-center justify-center flex-col space-y-2 cursor-pointer transition-colors hover:bg-slate-50 hover:rounded-sm hover:shadow-sm py-3"
+    >
       <img src={img} className="h-[300px] w-[300px]" alt="bag" />
-      <p className="font-thin text-sm">Female</p>
-      <p className="text-ellipsis mx-2">Lorem ipsum dolor sit amet.</p>
-      <p className="text-blue-500">$75 - $100</p>
+      {isHovered && (
+        <p
+          className="capitalize py-2 px-10 fixed flex gap-3 text-blue-500 items-center bg-white translate-y-20 "
+          onClick={() => addToCart(id)}
+        >
+          <MdOutlineAddShoppingCart fontSize={20} /> Add to Cart
+        </p>
+      )}
+      <p className="font-thin text-sm">{category}</p>
+      <p className="text-center px-2">{title}</p>
+      <p className="text-blue-500">${price}</p>
       <div className="flex justify-center ">
         <AiFillStar color="orange" />
         <AiFillStar color="orange" />

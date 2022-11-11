@@ -2,6 +2,8 @@ import React, { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import Input from "../common/Input";
 import Joi from "joi-browser";
+import { loginStore } from "../../store/AuthStore";
+import { observer } from "mobx-react-lite";
 
 const Login = () => {
   const [user, setUser] = useState({
@@ -25,8 +27,9 @@ const Login = () => {
     const result = Joi.validate(user, schema, { abortEarly: false });
     const { error } = result;
     if (!error) {
-      console.log("login sucessfull");
-      return null;
+      const data = getData(e);
+      doLogin(data);
+      navigate("/");
     } else {
       const errorData = {};
       for (let item of error.details) {
@@ -37,6 +40,24 @@ const Login = () => {
       setErrors(errorData);
       return errorData;
     }
+  };
+  const doLogin = async (data) => {
+    try {
+      await loginStore.doLogin(data);
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  const getData = (e) => {
+    const email = e.target.email.value;
+    const password = e.target.password.value;
+    const details = {
+      email: email,
+      password: password,
+    };
+    console.log(details);
+    return details;
   };
 
   // checking if the requirement meet or not in every change
@@ -71,7 +92,10 @@ const Login = () => {
         <h1 className="text-2xl text-red-700 mb-3 md:text-3xl lg:text-4xl">
           Login
         </h1>
-        <form className="space-y-2">
+        {loginStore.errors && (
+          <p className="text-red-700 text-center">{loginStore.errors}</p>
+        )}
+        <form className="space-y-2" onSubmit={validateForm}>
           <Input
             name="email"
             type="email"
@@ -92,7 +116,6 @@ const Login = () => {
           <button
             type="submit"
             className="bg-red-600 text-white text-center w-full h-10 rounded-sm text-lg transition-colors hover:bg-white hover:text-red-600 hover:border-2 hover:border-red-600"
-            onClick={validateForm}
           >
             Login
           </button>
@@ -110,4 +133,4 @@ const Login = () => {
   );
 };
 
-export default Login;
+export default observer(Login);

@@ -10,13 +10,15 @@ const Input = ({ label, name, type, error, handleChange }) => {
       return (
         <AiOutlineEyeInvisible
           onClick={handleVisible}
-          className="absolute cursor-pointer top-[47.5%] left-[75%] md:left-[59.5%] text-2xl lg:top-[52%] lg:left-[62%] lg:text-xl"
+          // className="absolute cursor-pointer top-[47.5%] left-[75%] md:left-[59.5%] text-2xl lg:top-[52%] lg:left-[62%] lg:text-xl"
+          className="-translate-y-7 translate-x-2 cursor-pointer text-xl"
         />
       );
     return (
       <AiOutlineEye
         onClick={handleVisible}
-        className="absolute cursor-pointer top-[47.5%] left-[75%] md:left-[59.5%] text-2xl lg:top-[52%] lg:left-[62%] lg:text-xl"
+        // className="absolute cursor-pointer top-[47.5%] left-[75%] md:left-[59.5%] text-2xl lg:top-[52%] lg:left-[62%] lg:text-xl"
+        className="-translate-y-7 translate-x-2 cursor-pointer text-xl"
       />
     );
   };
@@ -34,15 +36,19 @@ const Input = ({ label, name, type, error, handleChange }) => {
       <label htmlFor={name} className="text-lg">
         {label} <sup>*</sup>
       </label>
-      {type === "password" && Icon()}
 
       <input
         ref={input}
         onChange={(e) => handleChange(e)}
         type={type || "text"}
         name={name}
-        className="border border-slate-300 rounded-sm   h-10 pl-4"
+        className={
+          type === "password"
+            ? "border border-slate-300 rounded-sm h-10 pl-8"
+            : "border border-slate-300 rounded-sm h-10 pl-4"
+        }
       />
+      {type === "password" && Icon()}
       {error && <p className="text-red-600">{error}</p>}
     </div>
   );

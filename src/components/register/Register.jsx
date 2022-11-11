@@ -2,6 +2,7 @@ import React, { useRef, useState } from "react";
 import Joi from "joi-browser";
 import Input from "../common/Input";
 import { useNavigate } from "react-router-dom";
+import { registerStore } from "../../store/AuthStore";
 
 const Register = () => {
   const [user, setUser] = useState({
@@ -85,8 +86,9 @@ const Register = () => {
         window.alert("please accept term and condition to register");
         return null;
       }
-      console.log("login sucessfull");
-      return null;
+      const data = getData(e);
+      performRegistration(data);
+      navigate("/login");
     } else {
       const errorData = {};
       for (let item of error.details) {
@@ -97,6 +99,31 @@ const Register = () => {
       setErrors(errorData);
       return errorData;
     }
+  };
+
+  const performRegistration = async (data) => {
+    try {
+      await registerStore.doRegister(data);
+    } catch (error) {
+      console.log("error:::", error);
+    }
+  };
+
+  const getData = (e) => {
+    const fullName = e.target.fullName.value;
+    const email = e.target.email.value;
+    const number = e.target.phone.value;
+    const password = e.target.password.value;
+    const password_repeat = e.target.cPassword.value;
+    const details = {
+      name: fullName,
+      email: email,
+      number: number,
+      password: password,
+      password_repeat: password_repeat,
+    };
+    console.log(details);
+    return details;
   };
 
   // checking if the requirement meet or not in every change
