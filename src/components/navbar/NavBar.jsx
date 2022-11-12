@@ -6,6 +6,7 @@ import { Link, useNavigate } from "react-router-dom";
 import { observer } from "mobx-react-lite";
 import { loginStore } from "../../store/AuthStore";
 import { toJS } from "mobx";
+import cartStore from "../../store/CartStore";
 
 const Navbar = () => {
   const [toggle, setToggle] = useState(false);
@@ -47,6 +48,15 @@ const Navbar = () => {
           {/* <img src={Logo} alt="logo" className="mr-3 w-20 md:w-24 lg:w-32 " /> */}
           <p className="font-mono font-semibold text-xl">Lanceme Up Store</p>
         </Link>
+        <div className="block lg:hidden py-2 pr-4 pl-3 text-black hover:text-blue-600 rounded md:text-lg md:bg-transparent cursor-pointer  md:p-0 dark:text-white">
+          <Link to="/cart" className="flex items-center gap-2">
+            <AiOutlineShoppingCart fontSize="20px" /> Cart
+            <span className="absolute translate-x-16  lg:top-5 bg-red-600 text-white px-1 rounded-lg lg:translate-x-16 text-sm">
+              {toJS(cartStore.length) > 0 && toJS(cartStore.length)}
+            </span>
+          </Link>
+        </div>
+
         <div className="flex order-2 ">
           {/* open menu */}
           {toggle ? (
@@ -79,6 +89,7 @@ const Navbar = () => {
             </button>
           </div>
         </div>
+
         <div
           ref={item}
           className="hidden justify-between items-center w-full lg:flex lg:w-auto lg:order-1"
@@ -101,6 +112,7 @@ const Navbar = () => {
               Search
             </button>
           </div>
+
           <ul className="flex flex-col p-4 mt-4 bg-gray-50 rounded-lg border border-gray-100 lg:flex-row lg:space-x-8 lg:mt-0 lg:text-sm lg:font-medium lg:border-0 lg:bg-white lg:dark:bg-gray-900 ">
             <li className="block py-2 pr-4 pl-3 text-black hover:text-blue-600  rounded md:text-lg md:bg-transparent cursor-pointer md:p-0 dark:text-white">
               <Link to="/">Home</Link>
@@ -123,9 +135,12 @@ const Navbar = () => {
                 Logout
               </li>
             )}
-            <li className="block py-2 pr-4 pl-3 text-black hover:text-blue-600 rounded md:text-lg md:bg-transparent cursor-pointer  md:p-0 dark:text-white">
+            <li className="hidden lg:block py-2 pr-4 pl-3 text-black hover:text-blue-600 rounded md:text-lg md:bg-transparent cursor-pointer  md:p-0 dark:text-white">
               <Link to="/cart" className="flex items-center gap-2">
                 <AiOutlineShoppingCart fontSize="20px" /> Cart
+                <span className="absolute translate-x-16  lg:top-5 bg-red-600 text-white px-1 rounded-lg lg:translate-x-16 text-sm">
+                  {toJS(cartStore.length) > 0 && toJS(cartStore.length)}
+                </span>
               </Link>
             </li>
           </ul>
