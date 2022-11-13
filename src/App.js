@@ -10,10 +10,10 @@ function App() {
     <>
       <Navbar />
       <Routes>
-        <Route path="/" element={<Index />} />
         <Route path="/login" element={<Login />} />
         <Route path="/cart" element={<Cart />} />
         <Route path="/register" element={<Register />} />
+        <Route path="*" element={<Index />} />
       </Routes>
     </>
   );

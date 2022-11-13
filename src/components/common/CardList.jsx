@@ -1,6 +1,5 @@
 import React from "react";
 import Card from "./Card";
-import Pic1 from "../../img/bag1.webp";
 
 import cartStore from "../../store/CartStore";
 
@@ -9,8 +8,9 @@ const CardList = ({ products }) => {
     const item = products.find((element) => element.id === id);
     cartStore.addItem(item);
   };
+
   return (
-    <div className="container my-10 grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 ">
+    <div className="container my-10 grid grid-cols md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4 ">
       {products.map((product, index) => (
         <Card
           addToCart={addIntoCart}
@@ -20,7 +20,7 @@ const CardList = ({ products }) => {
           title={product.title}
           category={product.category}
           price={product.price}
-          img={Pic1}
+          img={product.img}
         />
       ))}
     </div>

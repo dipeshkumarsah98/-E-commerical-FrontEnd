@@ -16,9 +16,12 @@ const Bill = (props) => {
         </span>
       </div>
       {/* checkout button */}
-      <button className="px-5 py-2 bg-gray-900 text-white border-2 border-black transition-colors hover:bg-white hover:text-black">
-        Proceed to checkout
-      </button>
+      <div className="flex justify-between md:justify-start">
+        <span></span>
+        <button className="px-5 py-2 bg-gray-900 text-white  border-2 border-black transition-colors hover:bg-white hover:text-black">
+          Proceed to checkout
+        </button>
+      </div>
     </div>
   );
 };

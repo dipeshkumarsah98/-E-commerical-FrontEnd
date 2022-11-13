@@ -11,37 +11,66 @@ const Cart = () => {
   const [products, setProducts] = useState([]);
   const navigate = useNavigate();
 
+  const cartItem = toJS(cartStore.cartItem);
+
   useEffect(() => {
-    const items = toJS(cartStore.cartItem);
-    console.log(items);
-    setProducts(items);
+    const fetchData = () => {
+      setProducts(cartItem);
+    };
+    fetchData();
   }, []);
 
   const clearCart = () => {
     cartStore.clearCart();
     setProducts([]);
   };
+  const removeItemFromCart = (id) => {
+    const items = products.filter((item) => item.id !== id);
+    cartStore.removeItem(id);
+    setProducts(items);
+  };
+  const increase = (id) => {
+    const index = products.findIndex((item) => item.id === id);
+    products[index].quantity += 1;
+    cartStore.updateQuantity(index, 1);
+  };
+  const decrease = (id) => {
+    const index = products.findIndex((item) => item.id === id);
+    products[index].quantity -= 1;
+    cartStore.updateQuantity(index, -1);
+  };
 
   return (
     <div className="container my-3">
       {/* heading */}
-      <div className="heading flex justify-between place-item-center py-3 bg-slate-200 px-2 ">
-        <p className="">Product</p>
-        <p>Price</p>
-        <p>Quality</p>
-        <p>Total</p>
-        <p></p>
-      </div>
-      {/* cart items */}
-      {products?.map((product, index) => (
-        <CartItem
-          key={index}
-          id={product.id}
-          title={product.title}
-          img={product.img}
-          price={product.price}
-        />
-      ))}
+      <table className="w-full">
+        <thead>
+          <tr className="h-16 font-mono bg-slate-50 text-gray-600 font-base text-sm md:text-lg">
+            <th className=" md:w-[10%]"></th>
+            <th className="w-2/12 md:w-2/12">Product</th>
+            <th>Price</th>
+            <th>Quantity</th>
+            <th>Total</th>
+            <th></th>
+          </tr>
+        </thead>
+        <tbody>
+          {/* cart items */}
+          {products?.map((product, index) => (
+            <CartItem
+              increase={increase}
+              decrease={decrease}
+              remove={removeItemFromCart}
+              key={index}
+              id={product.id}
+              quantity={product.quantity}
+              title={product.title}
+              img={product.img}
+              price={product.price}
+            />
+          ))}
+        </tbody>
+      </table>
 
       <hr className="h-2" />
 
