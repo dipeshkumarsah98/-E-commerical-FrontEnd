@@ -38,6 +38,9 @@ const Cart = () => {
     const index = products.findIndex((item) => item.id === id);
     products[index].quantity -= 1;
     cartStore.updateQuantity(index, -1);
+    if (products[index].quantity === 0) {
+      removeItemFromCart(id);
+    }
   };
 
   return (

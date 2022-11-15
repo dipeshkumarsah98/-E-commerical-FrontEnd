@@ -29,7 +29,6 @@ const Login = () => {
     if (!error) {
       const data = getData(e);
       doLogin(data);
-      navigate("/");
     } else {
       const errorData = {};
       for (let item of error.details) {
@@ -41,6 +40,7 @@ const Login = () => {
       return errorData;
     }
   };
+
   const doLogin = async (data) => {
     try {
       await loginStore.doLogin(data);
