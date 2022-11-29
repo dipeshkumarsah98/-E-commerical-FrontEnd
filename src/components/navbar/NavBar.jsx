@@ -46,7 +46,7 @@ const Navbar = () => {
         {/* logo and company name */}
         <Link to="/" className="flex items-center">
           {/* <img src={Logo} alt="logo" className="mr-3 w-20 md:w-24 lg:w-32 " /> */}
-          <p className="font-mono font-semibold text-xl">Lanceme Up Store</p>
+          <p className="font-mono font-semibold text-xl">DKS Store</p>
         </Link>
         <div className="block lg:hidden py-2 pr-4 pl-3 text-black hover:text-blue-600 rounded md:text-lg md:bg-transparent cursor-pointer  md:p-0 dark:text-white">
           <Link to="/cart" className="flex items-center gap-2">
